@@ -45,7 +45,6 @@
       axios
       .get('http://localhost:8000/api/v1/streams')
       .then(response => {
-        console.log(response);
         this.streams = response.data.streams.items;
       });
     }

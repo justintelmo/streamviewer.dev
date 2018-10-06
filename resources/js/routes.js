@@ -21,7 +21,7 @@ export default new VueRouter({
             component: Vue.component( 'Stream', require( './pages/Stream.vue' ) )
         },
         {
-            path: '/stats/:id',
+            path: '/stats/:id/:chatId',
             name: 'stats',
             component: Vue.component( 'Stats', require( './pages/Stats.vue' ) )
         }

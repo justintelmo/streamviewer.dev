@@ -27,6 +27,5 @@ Route::get( '/login/{social}/callback', 'Web\AuthenticationController@getSocialC
 Route::get( '/logout', 'Web\AuthenticationController@socialLogout' );
 
 Route::group(['middleware' => 'web'], function() {
-      Route::get( '/streams', 'Web\StreamsController@getStreams' );
       Route::get( '/callback', 'Web\StreamsController@authCallback' );
 });

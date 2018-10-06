@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('channel_id')->unique()->nullable();
             $table->text('avatar')->nullable();
             // Access token and expires_at can be nullable when inserting users who are just viewers, not Streamviewers
