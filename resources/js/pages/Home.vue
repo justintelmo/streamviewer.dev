@@ -12,7 +12,7 @@
 
   .streamBox {
     width: 180px;
-    height: 300px;
+    height: 240px;
     border-radius: 5px;
     border: 1px solid black;
     word-wrap: break-word;
@@ -25,9 +25,13 @@
 
 <template>
   <div class="container">
-      <div class="streamBox col-sm-3" v-for='stream in streams'>
+      <div class="row" v-for='streamGroup in groupedStreams'>
+        <div v-for='stream in streamGroup' class="streamBox col-lg-2">
           <img :src="stream.snippet.thumbnails.medium.url" class="thumbnail">
-          <a :href="'#/streams/' + stream.id.videoId">{{ stream.snippet.title }}</a>
+          <div>
+            <a :href="'#/streams/' + stream.id.videoId">{{ stream.snippet.title }}</a>
+          </div>
+        </div>
       </div>
   </div>
 </template>
@@ -47,6 +51,12 @@
       .then(response => {
         this.streams = response.data.streams.items;
       });
+    },
+    computed: {
+      groupedStreams() {
+        console.lo
+        return _.chunk(this.streams, 6);
+      }
     }
   }
 </script>
