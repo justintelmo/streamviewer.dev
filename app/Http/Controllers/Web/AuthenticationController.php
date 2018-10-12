@@ -29,7 +29,7 @@ class AuthenticationController extends Controller
             $googleClient->setIncludeGrantedScopes(true);
             $googleClient->setAccessType('offline');
 
-            $googleClient->setRedirectUri('http://localhost:8000/login/google/callback');
+            $googleClient->setRedirectUri('http://streamviewer-telmo.herokuapp.com/login/google/callback');
 
             if ( isset ($_SESSION['access_token'] ) && $_SESSION['access_token'] ) 
             {
@@ -84,7 +84,7 @@ class AuthenticationController extends Controller
         $googleClient->addScope(Google_Service_People::USERINFO_EMAIL);
         $googleClient->setAccessType('offline');
         $googleClient->setIncludeGrantedScopes(true);
-        $googleClient->setRedirectUri('http://localhost:8000/login/google/callback');
+        $googleClient->setRedirectUri('http://streamviewer-telmo.herokuapp.com/login/google/callback');
 
         if ( ! isset( $_GET['code'] ) )
         {
