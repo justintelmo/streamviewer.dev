@@ -36,7 +36,7 @@ class AuthenticationController extends Controller
                 $googleClient->setAccessToken($_SESSION['access_token']);
             } else 
             {
-                $redirectUri = 'http://' . $_SERVER['HTTP_HOST'] . '/login/google/callback';
+                $redirectUri = 'https://' . $_SERVER['HTTP_HOST'] . '/login/google/callback';
                 header('Location: ' . filter_var($redirectUri, FILTER_SANITIZE_URL));
                 die;
             }
@@ -96,7 +96,7 @@ class AuthenticationController extends Controller
         {
             $googleClient->authenticate($_GET['code']);
             $_SESSION['access_token'] = $googleClient->getAccessToken();
-            $redirectUri = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+            $redirectUri = 'https://' . $_SERVER['HTTP_HOST'] . '/';
             $user = $this->makeNewUser($googleClient);
             Auth::login( $user );
         }
