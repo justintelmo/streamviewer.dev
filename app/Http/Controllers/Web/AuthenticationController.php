@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 use Socialite;
 use Google_Client;
-use Google_Service_People;
+use Google_Service_PeopleService;
 use Google_Service_YouTube;
 
 class AuthenticationController extends Controller
@@ -24,8 +24,8 @@ class AuthenticationController extends Controller
             $googleClient->setClientSecret(env("GOOGLE_CLIENT_SECRET"));
             $googleClient->setDeveloperKey(env("GOOGLE_DEVELOPER_KEY"));
             $googleClient->addScope(Google_Service_Youtube::YOUTUBE_READONLY);
-            $googleClient->addScope(Google_Service_People::USERINFO_PROFILE);
-            $googleClient->addScope(Google_Service_People::USERINFO_EMAIL);
+            $googleClient->addScope(Google_Service_PeopleService::USERINFO_PROFILE);
+            $googleClient->addScope(Google_Service_PeopleService::USERINFO_EMAIL);
             $googleClient->setIncludeGrantedScopes(true);
             $googleClient->setAccessType('offline');
 
@@ -48,7 +48,7 @@ class AuthenticationController extends Controller
     }
 
     public function makeNewUser($googleClient) {
-        $peopleService = new Google_Service_People($googleClient);
+        $peopleService = new Google_Service_PeopleService($googleClient);
         $myDetails = $peopleService->people->get('people/me', array('personFields' => array('names','emailAddresses','photos')));
         $user = User::where('email', '=', $myDetails->emailAddresses[0]->getValue())->first();
 
