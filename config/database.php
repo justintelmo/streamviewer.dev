@@ -1,4 +1,5 @@
 <?php
+$dbUrl = parse_url(env("DATABASE_URL"));
 
 return [
 
@@ -56,11 +57,11 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => isset($dbUrl["host"]) ? $dbUrl["host"] : env("DB_HOST", "ec2-23-21-171-249.compute-1.amazonaws.com"),
+            'port' => isset($dbUrl["port"]) ? $dbUrl["port"] : env("DB_PORT", "5432"),
+            'database' => isset($dbUrl["path"]) ? ltrim($dbUrl["path"], '/') : env("DB_DATABASE", "d7k9rns71pujef"),
+            'username' => isset($dbUrl["user"]) ? $dbUrl["user"] : env("DB_USERNAME", "stcvrlexkwcmkn"),
+            'password' => isset($dbUrl["pass"]) ? $dbUrl["pass"] : env("DB_PASSWORD", "52e7da0195c6328c6cf1d02f821762113f14225dba0778b94209d886888972ad"),
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
