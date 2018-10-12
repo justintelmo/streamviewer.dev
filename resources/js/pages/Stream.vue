@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import STREAMVIEWER_CONFIG from "../config.js";
+  import { STREAMVIEWER_CONFIG } from "../config.js";
   export default {
     data() {
       return {
