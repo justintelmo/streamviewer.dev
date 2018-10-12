@@ -42,11 +42,9 @@
         axios.get(STREAMVIEWER_CONFIG.API_URL + '/messages/' + self.chatId + "/" + self.chatPageToken)
         .then(
           response => {
-            console.log(response);
             self.messages = response.data.messages.items;
             self.chatPageToken = response.data.messages.nextPageToken;
             axios.post(STREAMVIEWER_CONFIG.API_URL + '/messages', response.data.messages.items);
-            console.log("Time to next request: " + response.data.messages.pollingIntervalMillis);
             setTimeout(self.startChatMessagePolling, response.data.messages.pollingIntervalMillis);
           }
         )

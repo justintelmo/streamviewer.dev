@@ -27,8 +27,6 @@ class ChatMessageController extends Controller {
         
         $url = $url . "&key=" . env("GOOGLE_DEVELOPER_KEY");
 
-        Log::debug($url);
-
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -44,7 +42,6 @@ class ChatMessageController extends Controller {
         $data = $request->post();
 
         $messages = array();
-        // Log::debug(print_r($data, true));
         foreach ($data as $chatMessage) {
             $messages[] = array(
                 'id' => $chatMessage['id'],
@@ -55,8 +52,6 @@ class ChatMessageController extends Controller {
                 'content' => $chatMessage['snippet']['textMessageDetails']['messageText']
             );
         }
-
-        // Log::debug(print_r($messages, true));
 
         ChatMessage::insert($messages);
 
