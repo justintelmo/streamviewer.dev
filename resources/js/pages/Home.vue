@@ -21,6 +21,10 @@
 .thumbnail {
   height: 90px;
 }
+
+a {
+  font-size: 1vw;
+}
 </style>
 
 <template>
