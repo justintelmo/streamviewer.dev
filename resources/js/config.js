@@ -5,7 +5,7 @@ switch ( process.env.NODE_ENV ) {
         api_url = 'https://streamviewer.dev/api/v1';
         break;
     case 'production':
-        api_url = 'https://telmo-streamviewer.heroku.com/api/v1';
+        api_url = 'http://streamviewer-telmo.herokuapp.com/api/v1';
         break;
 }
 
