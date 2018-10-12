@@ -9,6 +9,6 @@ switch ( process.env.NODE_ENV ) {
         break;
 }
 
-export const STREAMVIEWER_CONFIG = {
+export default STREAMVIEWER_CONFIG = {
     API_URL: api_url
 };
