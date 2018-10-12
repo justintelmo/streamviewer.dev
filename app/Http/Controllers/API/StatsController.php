@@ -9,18 +9,25 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ChatMessage;
 
 class StatsController extends Controller {
-    // Todo: Clean this up for pagination
     public function getMessagesFromDB(Request $request) 
     {
         $params = $request->route()->parameters();
         $chatId = $params['liveChatId'];
-        Log::debug($chatId);
         /** \Illuminate\Database\Query\Builder $messagesTable  */
         $messages = ChatMessage::where('chat_id', '=', $chatId)->paginate(15);
-        // $messages = ChatMessage::all();
-        Log::debug(print_r($messages, true));
 
+        $response = array(
+            'pagination' => array(
+                'total' => $messages->total(),
+                'per_page' => $messages->perPage(),
+                'current_page' => $messages->currentPage(),
+                'last_page' => $messages->lastPage(),
+                'from' => $messages->firstItem(),
+                'to' => $messages->lastItem()
+            ),
+            'data' => $messages
+        );
         
-        return response()->json(array('success' => true, 'messages' => $messages));
+        return response()->json($response);
     }
 }

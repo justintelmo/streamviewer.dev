@@ -55181,6 +55181,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
         Navigation: __WEBPACK_IMPORTED_MODULE_0__components_Navigation_vue___default.a
@@ -56067,6 +56068,8 @@ exports.push([module.i, "\n\n", ""]);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Pagination_vue__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Pagination_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Pagination_vue__);
 //
 //
 //
@@ -56079,35 +56082,72 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       domain: document.domain,
       liveStreamingDetails: null,
-      messages: null
+      messages: null,
+      pagination: {
+        'current_page': 1
+      }
     };
   },
-  mounted: function mounted() {
-    var _this = this;
 
-    axios.get('http://localhost:8000/api/v1/stats/' + this.$route.params.chatId).then(function (response) {
-      _this.messages = response.data.messages.data;
+  components: {
+    Pagination: __WEBPACK_IMPORTED_MODULE_0__components_Pagination_vue___default.a
+  },
+  methods: {
+    fetchMessages: function fetchMessages() {
+      var _this = this;
 
-      _this.messages.forEach(function (message) {
-        var date = new Date(message.published_at * 1000);
-        date = date.toLocaleString();
-        message.published_at = date.toString();
+      axios.get('http://localhost:8000/api/v1/stats/' + this.$route.params.chatId + '?page=' + this.pagination.current_page).then(function (response) {
+        console.log(response);
+        _this.messages = response.data.data.data;
+        _this.pagination = response.data.pagination;
+
+        console.log(_this.pagination);
+        _this.messages.forEach(function (message) {
+          var date = new Date(message.published_at * 1000); // Multiply timestamp by 1000 to convert to seconds
+          date = date.toLocaleString();
+          message.published_at = date.toString(); // Safely convert to string just in case
+        });
+      }).catch(function (error) {
+        console.log(error.response.data);
       });
-      console.log(_this.messages);
-      // axios.post('http://localhost:8000/api/v1/messages', response.data);
-    });
+    },
+    fetchChannelDetails: function fetchChannelDetails() {
+      var _this2 = this;
 
-    axios.get('http://localhost:8000/api/v1/streams/' + this.$route.params.id).then(function (response) {
-      var data = response.data.stream.items[0];
-      _this.liveStreamingDetails = data.liveStreamingDetails;
-      _this.snippet = data.snippet;
-    });
+      axios.get('http://localhost:8000/api/v1/streams/' + this.$route.params.id).then(function (response) {
+        var data = response.data.stream.items[0];
+        _this2.liveStreamingDetails = data.liveStreamingDetails;
+        _this2.snippet = data.snippet;
+      });
+    }
+  },
+
+  mounted: function mounted() {
+    this.fetchMessages();
+    this.fetchChannelDetails();
   }
 });
 
@@ -56122,19 +56162,77 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "container" },
-    _vm._l(_vm.messages, function(message) {
-      return _c("div", [
-        _vm._v(
-          "\n    [" +
-            _vm._s(message.published_at) +
-            "] " +
-            _vm._s(message.display_name) +
-            ": " +
-            _vm._s(message.content) +
-            " \n  "
+    [
+      _c("table", { staticClass: "table table-sm" }, [
+        _c("thead", [
+          _c("tr", [
+            _c(
+              "th",
+              {
+                attrs: { scope: "col" },
+                on: {
+                  click: function($event) {
+                    _vm.sort("username")
+                  }
+                }
+              },
+              [_vm._v("Display Name")]
+            ),
+            _vm._v(" "),
+            _c(
+              "th",
+              {
+                attrs: { scope: "col" },
+                on: {
+                  click: function($event) {
+                    _vm.sort("content")
+                  }
+                }
+              },
+              [_vm._v("Message")]
+            ),
+            _vm._v(" "),
+            _c(
+              "th",
+              {
+                attrs: { scope: "col" },
+                on: {
+                  click: function($event) {
+                    _vm.sort("timestamp")
+                  }
+                }
+              },
+              [_vm._v("Posted At")]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.messages, function(message) {
+            return _c("tr", [
+              _c("td", [_vm._v(_vm._s(message.display_name))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(message.content))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(message.published_at))])
+            ])
+          })
         )
-      ])
-    })
+      ]),
+      _vm._v(" "),
+      _vm.pagination.last_page > 1
+        ? _c("pagination", {
+            attrs: { pagination: _vm.pagination, offset: 5 },
+            on: {
+              paginate: function($event) {
+                _vm.fetchMessages()
+              }
+            }
+          })
+        : _vm._e()
+    ],
+    1
   )
 }
 var staticRenderFns = []
@@ -56152,6 +56250,280 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(115)
+}
+var normalizeComponent = __webpack_require__(10)
+/* script */
+var __vue_script__ = __webpack_require__(117)
+/* template */
+var __vue_template__ = __webpack_require__(114)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Pagination.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d7acf176", Component.options)
+  } else {
+    hotAPI.reload("data-v-d7acf176", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 114 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "nav",
+    {
+      staticClass: "pagination is-centered is-rounded",
+      attrs: { role: "navigation", "aria-label": "pagination" }
+    },
+    [
+      _c(
+        "a",
+        {
+          staticClass: "pagination-previous",
+          attrs: { disabled: _vm.pagination.currentPage <= 1 },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.changePage(1)
+            }
+          }
+        },
+        [_vm._v("First Page")]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "pagination-previous",
+          attrs: { disabled: _vm.pagination.current_page <= 1 },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.changePage(_vm.pagination.current_page - 1)
+            }
+          }
+        },
+        [_vm._v("Previous")]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "pagination-next",
+          attrs: {
+            disabled: _vm.pagination.current_page >= _vm.pagination.last_page
+          },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.changePage(_vm.pagination.current_page + 1)
+            }
+          }
+        },
+        [_vm._v("Next Page")]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "pagination-next",
+          attrs: {
+            disabled: _vm.pagination.current_page >= _vm.pagination.last_page
+          },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.changePage(_vm.pagination.last_page)
+            }
+          }
+        },
+        [_vm._v("Last Page")]
+      ),
+      _vm._v(" "),
+      _c(
+        "ul",
+        { staticClass: "pagination-list" },
+        _vm._l(_vm.pages, function(page) {
+          return _c("li", [
+            _c(
+              "a",
+              {
+                staticClass: "pagination-link",
+                class: _vm.isCurrentPage(page) ? "is-current" : "",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.changePage(page)
+                  }
+                }
+              },
+              [_vm._v(_vm._s(page))]
+            )
+          ])
+        })
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-d7acf176", module.exports)
+  }
+}
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(116);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(9)("38a81308", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d7acf176\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Pagination.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d7acf176\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Pagination.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(8)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.pagination  {\n    margin-top: 40px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 117 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['pagination', 'offset'],
+
+    methods: {
+        isCurrentPage: function isCurrentPage(page) {
+            return this.pagination.current_page === page;
+        },
+        changePage: function changePage(page) {
+            if (page > this.pagination.last_page) {
+                page = this.pagination.last_page;
+            }
+
+            this.pagination.current_page = page;
+            this.$emit('paginate');
+        }
+    },
+
+    computed: {
+        pages: function pages() {
+            var pages = [];
+
+            var from = this.pagination.current_page - Math.floor(this.offset / 2);
+
+            if (from < 1) {
+                from = 1;
+            }
+
+            var to = from + this.offset - 1;
+
+            while (from <= to) {
+                pages.push(from);
+                from++;
+            }
+
+            return pages;
+        }
+    }
+});
 
 /***/ })
 /******/ ]);
