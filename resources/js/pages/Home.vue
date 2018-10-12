@@ -47,7 +47,7 @@
     },
     mounted() {
       axios
-      .get('http://localhost:8000/api/v1/streams')
+      .get('api/v1/streams')
       .then(response => {
         this.streams = response.data.streams.items;
       });
