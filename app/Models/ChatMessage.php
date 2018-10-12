@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ChatMessage extends Model
 {
+    protected $table = 'chat_messages';
 
     /**
      * The attributes that are mass assignable.
@@ -13,15 +14,6 @@ class ChatMessage extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'channel_id', 'content', 'chat_id', 'display_name'
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'published_at'
+        'id', 'channel_id', 'content', 'chat_id', 'display_name', 'published_at'
     ];
 }

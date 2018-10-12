@@ -5,7 +5,7 @@
 <template>
   <div class="container">
     <div v-for="message in messages">
-      [{{message.snippet.publishedAt}}] {{ message.authorDetails.displayName }}: {{message.snippet.textMessageDetails.messageText}} 
+      [{{message.published_at}}] {{ message.display_name }}: {{message.content}} 
     </div>
   </div>
 </template>
@@ -21,12 +21,18 @@
     },
 
     mounted() {
-      axios.get('http://localhost:8000/api/v1/messages/' + this.$route.params.chatId)
+      axios.get('http://localhost:8000/api/v1/stats/' + this.$route.params.chatId)
       .then(
         response => {
-          this.messages = response.data.messages.items;
+          this.messages = response.data.messages.data;
+
+          this.messages.forEach(message => {
+            let date = new Date(message.published_at * 1000);
+            date = date.toLocaleString();
+            message.published_at = date.toString();
+          });
           console.log(this.messages);
-          axios.post('http://localhost:8000/api/v1/messages', response.data);
+          // axios.post('http://localhost:8000/api/v1/messages', response.data);
         }
       )
 

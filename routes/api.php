@@ -14,4 +14,5 @@ Route::group(['prefix' => 'v1', 'middleware' => 'api'], function() {
     Route::post('/streams', 'API\StreamsController@updateStreams');
     Route::get('/messages/{liveChatId}/{pageToken?}', 'API\ChatMessageController@getMessages');
     Route::post('/messages', 'API\ChatMessageController@storeMessages');
+    Route::get('/stats/{liveChatId}', 'API\StatsController@getMessagesFromDB');
 });

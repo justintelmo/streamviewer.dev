@@ -55879,9 +55879,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   methods: {
     startChatMessagePolling: function startChatMessagePolling() {
       var self = this;
-      console.log("Start message polling");
-      console.log("Chat Id: " + self.chatId);
-      console.log("Chat Page Token: " + self.chatPageToken);
       axios.get('http://localhost:8000/api/v1/messages/' + self.chatId + "/" + self.chatPageToken).then(function (response) {
         console.log(response);
         self.messages = response.data.messages.items;
@@ -55897,7 +55894,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   mounted: function mounted() {
     var self = this;
     axios.get('http://localhost:8000/api/v1/streams/' + this.$route.params.id).then(function (response) {
-      console.log(response);
       self.chatId = response.data.stream.items[0].liveStreamingDetails.activeLiveChatId;
       self.viewers = response.data.stream.items[0].liveStreamingDetails.concurrentViewers;
       setTimeout(self.startChatMessagePolling(), 1);
@@ -56095,10 +56091,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   mounted: function mounted() {
     var _this = this;
 
-    axios.get('http://localhost:8000/api/v1/messages/' + this.$route.params.chatId).then(function (response) {
-      _this.messages = response.data.messages.items;
+    axios.get('http://localhost:8000/api/v1/stats/' + this.$route.params.chatId).then(function (response) {
+      _this.messages = response.data.messages.data;
+
+      _this.messages.forEach(function (message) {
+        var date = new Date(message.published_at * 1000);
+        date = date.toLocaleString();
+        message.published_at = date.toString();
+      });
       console.log(_this.messages);
-      axios.post('http://localhost:8000/api/v1/messages', response.data);
+      // axios.post('http://localhost:8000/api/v1/messages', response.data);
     });
 
     axios.get('http://localhost:8000/api/v1/streams/' + this.$route.params.id).then(function (response) {
@@ -56124,11 +56126,11 @@ var render = function() {
       return _c("div", [
         _vm._v(
           "\n    [" +
-            _vm._s(message.snippet.publishedAt) +
+            _vm._s(message.published_at) +
             "] " +
-            _vm._s(message.authorDetails.displayName) +
+            _vm._s(message.display_name) +
             ": " +
-            _vm._s(message.snippet.textMessageDetails.messageText) +
+            _vm._s(message.content) +
             " \n  "
         )
       ])

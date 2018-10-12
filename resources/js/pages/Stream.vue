@@ -38,9 +38,6 @@
     methods: {
       startChatMessagePolling: function () {
         var self = this;
-        console.log("Start message polling");
-        console.log("Chat Id: " + self.chatId);
-        console.log("Chat Page Token: " + self.chatPageToken);
         axios.get('http://localhost:8000/api/v1/messages/' + self.chatId + "/" + self.chatPageToken)
         .then(
           response => {
@@ -62,7 +59,6 @@
       axios.get('http://localhost:8000/api/v1/streams/' + this.$route.params.id)
       .then(
         response => {
-          console.log(response);
           self.chatId = response.data.stream.items[0].liveStreamingDetails.activeLiveChatId;
           self.viewers = response.data.stream.items[0].liveStreamingDetails.concurrentViewers;
           setTimeout(self.startChatMessagePolling(), 1);
