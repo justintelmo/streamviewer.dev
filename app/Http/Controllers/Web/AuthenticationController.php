@@ -80,8 +80,8 @@ class AuthenticationController extends Controller
         $googleClient->setClientSecret(env("GOOGLE_CLIENT_SECRET"));
         $googleClient->setDeveloperKey(env("GOOGLE_DEVELOPER_KEY"));
         $googleClient->addScope(Google_Service_Youtube::YOUTUBE_READONLY);
-        $googleClient->addScope(Google_Service_People::USERINFO_PROFILE);
-        $googleClient->addScope(Google_Service_People::USERINFO_EMAIL);
+        $googleClient->addScope(Google_Service_PeopleService::USERINFO_PROFILE);
+        $googleClient->addScope(Google_Service_PeopleService::USERINFO_EMAIL);
         $googleClient->setAccessType('offline');
         $googleClient->setIncludeGrantedScopes(true);
         $googleClient->setRedirectUri(env("GOOGLE_REDIRECT_URI"));

@@ -8,13 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Streams;
 
-use Google_Client;
-use Google_Service_YouTube;
-use Google_Service_People;
-
 use Request;
-
-use Socialite;
 use Exception;
 
 define('CREDENTIALS_PATH', '~/Documents/GitHub/streamviewer.dev/php-yt-oauth2.json');
