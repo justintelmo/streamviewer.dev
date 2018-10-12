@@ -25,6 +25,7 @@
 </template>
 
 <script>
+  import STREAMVIEWER_CONFIG from "../config.js";
   export default {
     data() {
       return {
@@ -38,7 +39,7 @@
     methods: {
       startChatMessagePolling: function () {
         var self = this;
-        axios.get('http://localhost:8000/api/v1/messages/' + self.chatId + "/" + self.chatPageToken)
+        axios.get(STREAMVIEWER_CONFIG.API_URL + '/messages/' + self.chatId + "/" + self.chatPageToken)
         .then(
           response => {
             console.log(response);
@@ -56,7 +57,7 @@
 
     mounted() {
       var self = this;
-      axios.get('http://localhost:8000/api/v1/streams/' + this.$route.params.id)
+      axios.get(STREAMVIEWER_CONFIG.API_URL + '/streams/' + this.$route.params.id)
       .then(
         response => {
           self.chatId = response.data.stream.items[0].liveStreamingDetails.activeLiveChatId;

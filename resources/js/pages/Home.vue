@@ -39,6 +39,7 @@
 <script>
   import Vue from "vue";
   import axios from "axios";
+  import STREAMVIEWER_CONFIG from "../config.js";
   export default {
     data() {
       return {
@@ -47,7 +48,7 @@
     },
     mounted() {
       axios
-      .get('api/v1/streams')
+      .get(STREAMVIEWER_CONFIG.API_URL + '/streams')
       .then(response => {
         this.streams = response.data.streams.items;
       });

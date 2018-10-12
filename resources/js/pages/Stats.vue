@@ -27,6 +27,7 @@
 </template>
 
 <script>
+  import STREAMVIEWER_CONFIG from "../config.js";
   import Pagination from '../components/Pagination.vue';
   export default {
     data() {
@@ -44,7 +45,7 @@
     },
     methods: {
       fetchMessages() {
-        axios.get('http://localhost:8000/api/v1/stats/' + this.$route.params.chatId + '?page=' + this.pagination.current_page)
+        axios.get(STREAMVIEWER_CONFIG.API_URL + '/stats/' + this.$route.params.chatId + '?page=' + this.pagination.current_page)
           .then(response => {
             console.log(response);
             this.messages = response.data.data.data;
