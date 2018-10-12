@@ -37,6 +37,9 @@ class AuthenticationController extends Controller
             } else 
             {
                 $redirectUri = 'https://' . $_SERVER['HTTP_HOST'] . '/login/google/callback';
+                header('Access-Control-Allow-Origin: *');
+                header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+                header('Access-Control-Allow-Headers: Content-Type, Accept, Authorization, X-Requested-With, Application');
                 header('Location: ' . filter_var($redirectUri, FILTER_SANITIZE_URL));
                 die;
             }
@@ -89,6 +92,9 @@ class AuthenticationController extends Controller
         if ( ! isset( $_GET['code'] ) )
         {
             $authUrl = $googleClient->createAuthUrl();
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+            header('Access-Control-Allow-Headers: Content-Type, Accept, Authorization, X-Requested-With, Application');
             header( 'Location: ' . filter_var($authUrl, FILTER_SANITIZE_URL) );
             die;
         }
