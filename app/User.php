@@ -7,6 +7,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
+use Carbon;
+
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
@@ -44,7 +46,7 @@ class User extends Authenticatable
 
         if (isset($data['access_token'])) {
             $user->access_token = $data['access_token'];
-            $user->expires_at = time() + $data['expires_at'];
+            $user->expires_at = Carbon::now()->addHour();
             $user->save();
         }
 
