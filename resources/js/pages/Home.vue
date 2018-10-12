@@ -1,26 +1,26 @@
 <style>
-  #streamsContainer {
-    width: 100%;
-    height: 75%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-  }
+#streamsContainer {
+  width: 100%;
+  height: 75%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
 
-  .streamBox {
-    width: 180px;
-    height: 240px;
-    border-radius: 5px;
-    border: 1px solid black;
-    word-wrap: break-word;
-  }
+.streamBox {
+  width: 180px;
+  height: 240px;
+  border-radius: 5px;
+  border: 1px solid black;
+  word-wrap: break-word;
+}
 
-  .thumbnail {
-    height: 90px;
-  }
+.thumbnail {
+  height: 90px;
+}
 </style>
 
 <template>
@@ -37,27 +37,24 @@
 </template>
 
 <script>
-  import Vue from "vue";
-  import axios from "axios";
-  import { STREAMVIEWER_CONFIG } from "../config.js";
-  export default {
-    data() {
-      return {
-        streams: null
-      };
-    },
-    mounted() {
-      console.log(STREAMVIEWER_CONFIG);
-      axios
-      .get(STREAMVIEWER_CONFIG.API_URL + '/streams')
-      .then(response => {
-        this.streams = response.data.streams.items;
-      });
-    },
-    computed: {
-      groupedStreams() {
-        return _.chunk(this.streams, 6);
-      }
+import Vue from "vue";
+import axios from "axios";
+import { STREAMVIEWER_CONFIG } from "../config.js";
+export default {
+  data() {
+    return {
+      streams: null
+    };
+  },
+  mounted() {
+    axios.get(STREAMVIEWER_CONFIG.API_URL + "/streams").then(response => {
+      this.streams = response.data.streams.items;
+    });
+  },
+  computed: {
+    groupedStreams() {
+      return _.chunk(this.streams, 6);
     }
   }
+};
 </script>
