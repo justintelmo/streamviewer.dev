@@ -12,7 +12,8 @@
         "laravel/framework": "5.7.*",
         "laravel/passport": "^7.0",
         "laravel/socialite": "^3.1",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "ext-pdo_sqlite": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -60,5 +61,10 @@
         "optimize-autoloader": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "post-install-cmd": [
+        "php artisan clear-compiled",
+        "php artisan optimize",
+        "chmod -R 777 public/"
+    ]
 }
