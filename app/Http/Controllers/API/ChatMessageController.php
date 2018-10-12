@@ -49,7 +49,7 @@ class ChatMessageController extends Controller {
                 'chat_id' => $chatMessage['snippet']['liveChatId'],
                 'channel_id' => $chatMessage['snippet']['authorChannelId'],
                 'display_name' => $chatMessage['authorDetails']['displayName'],
-                'published_at' => Carbon::createFromTimestamp($chatMessage['snippet']['publishedAt']),
+                'published_at' => Carbon::createFromTimestamp(strtotime($chatMessage['snippet']['publishedAt'])),
                 'content' => $chatMessage['snippet']['textMessageDetails']['messageText']
             );
         }
