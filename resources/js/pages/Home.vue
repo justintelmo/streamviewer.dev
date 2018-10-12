@@ -47,6 +47,7 @@
       };
     },
     mounted() {
+      console.log(STREAMVIEWER_CONFIG);
       axios
       .get(STREAMVIEWER_CONFIG.API_URL + '/streams')
       .then(response => {

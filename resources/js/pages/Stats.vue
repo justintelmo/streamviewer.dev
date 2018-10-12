@@ -64,7 +64,7 @@
       },
 
       fetchChannelDetails() {
-        axios.get('http://localhost:8000/api/v1/streams/' + this.$route.params.id)
+        axios.get(STREAMVIEWER_CONFIG.API_URL + '/streams/' + this.$route.params.id)
         .then(
           response => {
             let data = response.data.stream.items[0];
