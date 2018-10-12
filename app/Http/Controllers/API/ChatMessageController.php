@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\ChatMessage;
+use Illuminate\Support\Carbon;
 
 
 class ChatMessageController extends Controller {
@@ -48,7 +49,7 @@ class ChatMessageController extends Controller {
                 'chat_id' => $chatMessage['snippet']['liveChatId'],
                 'channel_id' => $chatMessage['snippet']['authorChannelId'],
                 'display_name' => $chatMessage['authorDetails']['displayName'],
-                'published_at' => strtotime($chatMessage['snippet']['publishedAt']),
+                'published_at' => Carbon::createFromTimestamp($chatMessage['snippet']['publishedAt']),
                 'content' => $chatMessage['snippet']['textMessageDetails']['messageText']
             );
         }

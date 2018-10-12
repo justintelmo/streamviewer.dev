@@ -16,4 +16,8 @@ class ChatMessage extends Model
     protected $fillable = [
         'id', 'channel_id', 'content', 'chat_id', 'display_name', 'published_at'
     ];
+
+    public function getDateFormat() {
+        return 'Y-m-d H:i:s';
+    }
 }
