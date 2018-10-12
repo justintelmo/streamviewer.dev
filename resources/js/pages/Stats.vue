@@ -13,7 +13,7 @@
       </thead>
 
       <tbody>
-        <tr v-for="message in messages">
+        <tr v-for="message in sortedMessages">
           <td>{{message.display_name}}</td>
           <td>{{message.content}}</td>
           <td>{{message.published_at}}</td>
@@ -42,6 +42,22 @@ export default {
   components: {
     Pagination
   },
+  computed: {
+    sortedMessages() {
+      if (!this.messages) {
+        return 0;
+      }
+
+      return this.messages.sort((a, b) => {
+        let modifier = 1;
+        if (this.currentSortDir == "desc") modifier = -1;
+        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+
+        return 0;
+      });
+    }
+  },
   methods: {
     fetchMessages() {
       axios
@@ -69,6 +85,13 @@ export default {
           this.liveStreamingDetails = data.liveStreamingDetails;
           this.snippet = data.snippet;
         });
+    },
+
+    sort(category) {
+      if (category === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
+      }
+      this.currentSort = category;
     }
   },
 

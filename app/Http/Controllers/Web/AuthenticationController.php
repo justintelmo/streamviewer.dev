@@ -16,7 +16,7 @@ use Google_Service_YouTube;
 class AuthenticationController extends Controller
 {
     public function getSocialRedirect($account)
-{
+    {
         try 
         {
             $googleClient = new Google_Client();
@@ -30,13 +30,14 @@ class AuthenticationController extends Controller
             $googleClient->setAccessType('offline');
 
             $googleClient->setRedirectUri(env("GOOGLE_REDIRECT_URI"));
-
+            
             if ( isset ($_SESSION['access_token'] ) && $_SESSION['access_token'] ) 
             {
                 $googleClient->setAccessToken($_SESSION['access_token']);
             } else 
             {
-                $redirectUri = 'https://' . $_SERVER['HTTP_HOST'] . '/login/google/callback';
+                $redirectUri = env("APP_ENV") == "production" ? 'https://' : 'http://';
+                $redirectUri = $redirectUri . $_SERVER['HTTP_HOST'] . '/login/google/callback';
                 header('Access-Control-Allow-Origin: *');
                 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
                 header('Access-Control-Allow-Headers: Content-Type, Accept, Authorization, X-Requested-With, Application');
@@ -102,7 +103,6 @@ class AuthenticationController extends Controller
         {
             $googleClient->authenticate($_GET['code']);
             $_SESSION['access_token'] = $googleClient->getAccessToken();
-            $redirectUri = 'https://' . $_SERVER['HTTP_HOST'] . '/';
             $user = $this->makeNewUser($googleClient);
             Auth::login( $user );
         }
@@ -111,7 +111,13 @@ class AuthenticationController extends Controller
 
     public function socialLogout(Request $request)
     {
-        Auth::guard(null)->logout();
+        Auth::guard()->logout();
+        $request->session()->invalidate();
+
+        if ($request->wantsJson()) {
+            return response()->json([], 204);
+        }
+        
         $request->session()->flush();
         $request->session()->regenerate();
 

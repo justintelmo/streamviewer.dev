@@ -16,6 +16,7 @@
   border-radius: 5px;
   border: 1px solid black;
   word-wrap: break-word;
+  font-size: 0.9em;
 }
 
 .thumbnail {
@@ -23,7 +24,7 @@
 }
 
 a {
-  font-size: 1vw;
+  font-size: 14px;
 }
 </style>
 

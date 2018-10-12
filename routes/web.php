@@ -12,7 +12,6 @@
 */
 
 Route::get( '/', 'Web\AppController@getApp' )
-      ->middleware('cors')
       ->middleware('auth');
 
 Route::get('/login', 'Web\AppController@getLogin' )
