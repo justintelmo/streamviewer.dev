@@ -55,7 +55,6 @@
     },
     computed: {
       groupedStreams() {
-        console.lo
         return _.chunk(this.streams, 6);
       }
     }
