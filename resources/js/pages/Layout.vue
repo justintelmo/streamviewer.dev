@@ -3,7 +3,7 @@
 
 <template>
     <div id="app-layout">
-        <navigation username={{ Auth::user()->name }}></navigation>
+        <navigation></navigation>
 
         <router-view></router-view>
     </div>
