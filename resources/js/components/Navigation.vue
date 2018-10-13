@@ -20,18 +20,17 @@
 </template>
 
 <script>
-export default {
-  props: ["username"],
-  data() {
-    return {
-      username: ""
-    };
-  },
-  mounted() {
-    console.log(this.username);
-  }
-};
 </script>
 
 <style>
+#navbarNav {
+  position: relative;
+  margin: 0 auto;
+  text-align: right;
+}
+
+#navbarNav > ul {
+  position: absolute;
+  left: 90%;
+}
 </style>

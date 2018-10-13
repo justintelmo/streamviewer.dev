@@ -3,6 +3,11 @@
 
 <template>
   <div class="container">
+    <div class="container">
+      <div class="col-sm-12">
+        <a class="btn btn-primary left-align" :href="'#/streams/' + $route.params.id">View stream</a>
+      </div>
+    </div>
     <table class="table table-sm">
       <thead>
         <tr>

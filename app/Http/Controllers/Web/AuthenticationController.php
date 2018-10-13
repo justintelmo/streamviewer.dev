@@ -55,8 +55,6 @@ class AuthenticationController extends Controller
         $peopleService = new Google_Service_PeopleService($googleClient);
         $myDetails = $peopleService->people->get('people/me', array('personFields' => array('names','emailAddresses','photos')));
         $user = User::where('email', '=', $myDetails->emailAddresses[0]->getValue())->first();
-
-        Log::debug(print_r($myDetails, true));
         $youtubeService = new Google_Service_YouTube($googleClient);
         $myChannels = $youtubeService->channels->listChannels(array('part' => 'id,snippet'), array('mine' => true));
         $myChannels = $myChannels->getItems();
@@ -117,7 +115,7 @@ class AuthenticationController extends Controller
         if ($request->wantsJson()) {
             return response()->json([], 204);
         }
-        
+
         $request->session()->flush();
         $request->session()->regenerate();
 

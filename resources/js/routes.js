@@ -9,6 +9,11 @@ export default new VueRouter({
             name: 'layout',
             component: Vue.component('Layout', require('./pages/Layout.vue')),
             children: [{
+                    path: '/login',
+                    name: 'Login',
+                    component: Vue.component('Login', require('./pages/Login.vue'))
+                },
+                {
                     path: '/',
                     name: 'Home',
                     component: Vue.component('Home', require('./pages/Home.vue')),

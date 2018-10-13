@@ -26,18 +26,27 @@
 a {
   font-size: 14px;
 }
+
+.stream-title {
+  font-size: 2.5em;
+  text-align: center;
+  line-height: 50px;
+}
 </style>
 
 <template>
   <div class="container">
-      <div class="row" v-for='streamGroup in groupedStreams'>
-        <div v-for='stream in streamGroup' class="streamBox col-lg-2">
-          <img :src="stream.snippet.thumbnails.medium.url" class="thumbnail">
-          <div>
-            <a :href="'#/streams/' + stream.id.videoId">{{ stream.snippet.title }}</a>
-          </div>
+    <div class="col-sm-12">
+      <p class="stream-title">Top Streams</p>
+    </div>
+    <div class="row" v-for='streamGroup in groupedStreams'>
+      <div v-for='stream in streamGroup' class="streamBox col-lg-2">
+        <img :src="stream.snippet.thumbnails.medium.url" class="thumbnail">
+        <div>
+          <a :href="'#/streams/' + stream.id.videoId">{{ stream.snippet.title }}</a>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
