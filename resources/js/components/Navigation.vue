@@ -20,6 +20,17 @@
 </template>
 
 <script>
+export default {
+  props: ["username"],
+  data() {
+    return {
+      username: ""
+    };
+  },
+  mounted() {
+    console.log(this.username);
+  }
+};
 </script>
 
 <style>

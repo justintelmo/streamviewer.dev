@@ -6,14 +6,14 @@
     <table class="table table-sm">
       <thead>
         <tr>
-          <th scope="col" @click="sort('username')">Display Name</th>
-          <th scope="col" @click="sort('content')">Message</th>
-          <th scope="col" @click="sort('timestamp')">Posted At</th>
+          <th scope="col" @click="fetchMessagesSortedBy('display_name')">Display Name</th>
+          <th scope="col" @click="fetchMessagesSortedBy('content')">Message</th>
+          <th scope="col" @click="fetchMessagesSortedBy('published_at')">Posted At</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr v-for="message in sortedMessages">
+        <tr v-for="message in messages">
           <td>{{message.display_name}}</td>
           <td>{{message.content}}</td>
           <td>{{message.published_at}}</td>
@@ -36,29 +36,42 @@ export default {
       messages: null,
       pagination: {
         current_page: 1
-      }
+      },
+      currentSort: "published_at",
+      currentSortDir: "desc"
     };
   },
   components: {
     Pagination
   },
-  computed: {
-    sortedMessages() {
-      if (!this.messages) {
-        return 0;
+  methods: {
+    fetchMessagesSortedBy(sortBy) {
+      if (this.currentSortDir === "desc") {
+        this.currentSortDir = "asc";
+      } else {
+        this.currentSortDir = "desc";
       }
 
-      return this.messages.sort((a, b) => {
-        let modifier = 1;
-        if (this.currentSortDir == "desc") modifier = -1;
-        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-
-        return 0;
-      });
-    }
-  },
-  methods: {
+      axios
+        .get(
+          STREAMVIEWER_CONFIG.API_URL +
+            "/stats/" +
+            this.$route.params.chatId +
+            "/" +
+            sortBy +
+            "/" +
+            this.currentSortDir +
+            "?page=" +
+            this.pagination.current_page
+        )
+        .then(response => {
+          this.messages = response.data.data.data;
+          this.pagination = response.data.pagination;
+        })
+        .catch(error => {
+          console.log(error.response.data);
+        });
+    },
     fetchMessages() {
       axios
         .get(
@@ -86,12 +99,11 @@ export default {
           this.snippet = data.snippet;
         });
     },
-
-    sort(category) {
-      if (category === this.currentSort) {
+    sort(s) {
+      if (s === this.currentSort) {
         this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
       }
-      this.currentSort = category;
+      this.currentSort = s;
     }
   },
 

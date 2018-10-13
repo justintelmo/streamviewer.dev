@@ -3,18 +3,18 @@
 
 <template>
     <div id="app-layout">
-        <navigation></navigation>
+        <navigation username={{ Auth::user()->name }}></navigation>
 
         <router-view></router-view>
     </div>
 </template>
 
 <script>
-    import Navigation from '../components/Navigation.vue';
-    
-    export default {
-        components: {
-            Navigation
-        }
-    }
+import Navigation from "../components/Navigation.vue";
+
+export default {
+  components: {
+    Navigation
+  }
+};
 </script>
