@@ -6,6 +6,25 @@
 .left-align {
   float: left;
 }
+
+div {
+  background-color: #1e2326;
+}
+
+.viewer-count {
+  color: #fff;
+}
+
+.videoWrapper {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.container {
+  background-color: #1e2326;
+  margin: auto;
+  width: 50%;
+}
 </style>
 
 <template>
@@ -16,16 +35,20 @@
           <a class="btn btn-primary left-align" :href="'#/stats/' + $route.params.id + '/' + this.chatId">View stats</a>
         </div>
         <div class="col-sm-9">
-          <p class="right-align">Current viewers: {{ viewers }}</p>
+          <p class="right-align viewer-count">Current viewers: {{ viewers }}</p>
         </div>
       </div>
       <div style="clear: both;"></div>
     </div>
     <div class="col-sm-6">
-      <iframe width="720" height="480" :src="'https://www.youtube.com/embed/' + $route.params.id + '?autoplay=1'" frameborder="0" allowfullscreen></iframe><br/>
+      <div class="videoWrapper">
+        <iframe width="720" height="480" :src="'https://www.youtube.com/embed/' + $route.params.id + '?autoplay=1'" frameborder="0" allowfullscreen></iframe><br/>
+      </div>
     </div>
     <div class="col-sm-6">
-      <iframe width="600" height="350" :src="'https://www.youtube.com/live_chat?v=' + $route.params.id + '&output=embed&embed_domain=' + domain" allowfullscreen="" frameborder="0"></iframe>
+      <div class="videoWrapper">
+        <iframe width="720" height="350" :src="'https://www.youtube.com/live_chat?v=' + $route.params.id + '&output=embed&embed_domain=' + domain" allowfullscreen="" frameborder="0"></iframe>
+      </div>
     </div>
   </div>
 </template>

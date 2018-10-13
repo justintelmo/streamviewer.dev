@@ -6,7 +6,6 @@ Vue.use(VueRouter);
 export default new VueRouter({
     routes: [{
             path: '/',
-            name: 'layout',
             component: Vue.component('Layout', require('./pages/Layout.vue')),
             children: [{
                     path: '/login',

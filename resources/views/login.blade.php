@@ -54,11 +54,6 @@
     </head>
     <body>
     <div id="app">
-        
-        <div class="title-bar" data-responsive-toggle="my-menu" data-hide-for="medium">
-            <button class="menu-icon" type="button" data-toggle="my-menu"></button>
-            <div class="title-bar-title">Menu</div>
-        </div>
         <div class="top-bar" id="my-menu">
             <div class="top-bar-left">
                 <ul class="menu">

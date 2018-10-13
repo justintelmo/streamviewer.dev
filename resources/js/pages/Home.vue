@@ -14,7 +14,6 @@
   width: 180px;
   height: 240px;
   border-radius: 5px;
-  border: 1px solid black;
   word-wrap: break-word;
   font-size: 0.9em;
 }
@@ -25,12 +24,26 @@
 
 a {
   font-size: 14px;
+  color: rgb(200, 200, 200);
+}
+
+a:hover {
+  text-decoration: none;
+  color: #fff;
 }
 
 .stream-title {
   font-size: 2.5em;
   text-align: center;
   line-height: 50px;
+}
+
+div {
+  background-color: #1e2326;
+}
+
+.stream-title {
+  color: #fff;
 }
 </style>
 
