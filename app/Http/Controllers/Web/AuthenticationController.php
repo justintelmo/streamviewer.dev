@@ -104,7 +104,7 @@ class AuthenticationController extends Controller
             $user = $this->makeNewUser($googleClient);
             Auth::login( $user );
         }
-        return redirect('/');     
+        return redirect('/', 302, [], true);     
     }
 
     public function socialLogout(Request $request)
