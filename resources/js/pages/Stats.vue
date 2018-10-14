@@ -47,9 +47,10 @@ tbody td {
   border-left: 2px solid black;
   border-right: 2px solid black;
 }
-div {
+
+/* div {
   background-color: #1e2326;
-}
+} */
 
 .pagination-previous {
   background: white;
@@ -69,6 +70,7 @@ div {
     <div class="container">
       <div class="col-sm-12">
         <a class="btn btn-primary left-align" :href="'#/streams/' + $route.params.id">View stream</a>
+        <input v-model="search" placeholder="Look by username..." v-on:blur="fetchMessages()">
       </div>
     </div>
     <table class="table table-sm">
@@ -111,54 +113,57 @@ export default {
       },
       currentSort: "published_at",
       currentSortDir: "desc",
-      loading: false
+      loading: false,
+      search: null
     };
   },
   components: {
     Pagination
   },
   methods: {
+    buildUrl() {
+      let url =
+        STREAMVIEWER_CONFIG.API_URL +
+        "/stats?chatId=" +
+        this.$route.params.chatId;
+
+      if (this.search) {
+        url += "&search=" + this.search;
+      }
+
+      if (this.currentSortDir) {
+        url += "&sortDir=" + this.currentSortDir;
+      }
+
+      if (this.currentSort) {
+        url += "&sortBy=" + this.currentSort;
+      }
+
+      url += "&page=" + this.pagination.current_page;
+
+      return url;
+    },
+
     fetchMessagesSortedBy(sortBy) {
       if (this.currentSortDir === "desc") {
         this.currentSortDir = "asc";
       } else {
         this.currentSortDir = "desc";
       }
-
-      axios
-        .get(
-          STREAMVIEWER_CONFIG.API_URL +
-            "/stats/" +
-            this.$route.params.chatId +
-            "/" +
-            sortBy +
-            "/" +
-            this.currentSortDir +
-            "?page=" +
-            this.pagination.current_page
-        )
-        .then(response => {
-          this.messages = response.data.data.data;
-          this.pagination = response.data.pagination;
-        })
-        .catch(error => {
-          console.log(error.response.data);
-        });
+      this.currentSort = sortBy;
+      this.fetchMessages();
     },
+
     fetchMessages() {
       this.loading = true;
+      console.log(this.sortBy);
       axios
-        .get(
-          STREAMVIEWER_CONFIG.API_URL +
-            "/stats/" +
-            this.$route.params.chatId +
-            "?page=" +
-            this.pagination.current_page
-        )
+        .get(this.buildUrl())
         .then(response => {
+          console.log("Done loading!");
+          this.loading = false;
           this.messages = response.data.data.data;
           this.pagination = response.data.pagination;
-          this.loading = false;
         })
         .catch(error => {
           this.loading = false;
@@ -174,12 +179,6 @@ export default {
           this.liveStreamingDetails = data.liveStreamingDetails;
           this.snippet = data.snippet;
         });
-    },
-    sort(s) {
-      if (s === this.currentSort) {
-        this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
-      }
-      this.currentSort = s;
     }
   },
 

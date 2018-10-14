@@ -11,18 +11,25 @@ use App\Models\ChatMessage;
 class StatsController extends Controller {
     public function getMessagesFromDB(Request $request) 
     {
-        $params = $request->route()->parameters();
-        $chatId = $params['liveChatId'];
-        $sortBy = null;
-        $sortDir = null;
+        $chatId = $request->chatId;
+        $sortBy = $request->sortBy;
+        $sortDir = $request->sortDir;
+        $search = strip_tags($request->search);
+
+        Log::debug($request->fullUrl());
+
         /** \Illuminate\Database\Query\Builder $messagesTable  */
         $messages = ChatMessage::where('chat_id', '=', $chatId);
         
-        if (isset($params['sortBy'])) {
-            if (isset($params['sortDir']) && $params['sortDir'] === "desc") {
-                $messages->orderBy($params['sortBy'], 'desc');
+        if (isset($request->search)) {
+            $messages = $messages->where('display_name', 'like', '%' . $search . '%');
+        }
+
+        if (isset($sortBy)) {
+            if (isset($sortDir) && $sortDir == 'desc') {
+                $messages = $messages->orderBy($sortBy, 'desc');
             } else {
-                $messages->orderBy($params['sortBy']);
+                $messages = $messages->orderBy($sortBy);
             }
         }
 

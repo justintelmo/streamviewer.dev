@@ -16,7 +16,6 @@ class ChatMessageController extends Controller {
         $pageToken = null;
         
         if (isset($params['pageToken'])) {
-            Log::debug(print_r($params, true));
             $pageToken = $params['pageToken'];
         }
 
@@ -33,8 +32,6 @@ class ChatMessageController extends Controller {
         curl_setopt($ch, CURLOPT_HEADER, 0);
         $data = curl_exec($ch);
         curl_close($ch);
-
-        Log::debug(print_r($data, true));
 
         return response()->json(array('success' => true, 'messages' => json_decode($data)));
     }

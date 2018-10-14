@@ -61,7 +61,8 @@ export default {
       domain: document.domain,
       viewers: null,
       chatId: null,
-      chatPageToken: ""
+      chatPageToken: "",
+      pollingTimeout: null
     };
   },
 
@@ -83,12 +84,12 @@ export default {
             STREAMVIEWER_CONFIG.API_URL + "/messages",
             response.data.messages.items
           );
-          setTimeout(
+          this.pollingTimeout = setTimeout(
             self.startChatMessagePolling,
             response.data.messages.pollingIntervalMillis
           );
         });
-      clearTimeout();
+      clearTimeout(this.pollingTimeout);
     }
   },
 
@@ -101,7 +102,7 @@ export default {
           response.data.stream.items[0].liveStreamingDetails.activeLiveChatId;
         self.viewers =
           response.data.stream.items[0].liveStreamingDetails.concurrentViewers;
-        setTimeout(self.startChatMessagePolling(), 1);
+        this.pollingTimeout = setTimeout(self.startChatMessagePolling(), 1);
       });
   }
 };
