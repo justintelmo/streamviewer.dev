@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\App;
 
 class CORS {
 
@@ -16,7 +16,7 @@ class CORS {
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->secure() && env('APP_ENV') === "production") {
+        if (!$request->secure() && App::environment() === "production") {
             return redirect()->secure($request->getRequestUri());
         }
 
