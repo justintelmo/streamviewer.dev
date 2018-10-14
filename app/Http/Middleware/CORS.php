@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Request;
 
 class CORS {
 
@@ -16,8 +17,8 @@ class CORS {
      */
     public function handle($request, Closure $next)
     {
-        $request->setTrustedProxies( [ $request->getClientIp() ] );
-        
+        $request->setTrustedProxies( [ $request->getClientIp() ], Request::HEADER_X_FORWARDED_ALL );
+
         if (!$request->secure() && App::environment() === "production") {
             return redirect()->secure($request->getRequestUri());
         }
