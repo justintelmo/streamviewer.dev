@@ -17,7 +17,7 @@ class CORS {
      */
     public function handle($request, Closure $next)
     {
-        $request->setTrustedProxies( [ $request->getClientIp() ], Request::HEADER_X_FORWARDED_ALL );
+        $request->setTrustedProxies( [ $request->getClientIp() ], 0b11110 );
 
         if (!$request->secure() && App::environment() === "production") {
             return redirect()->secure($request->getRequestUri());
